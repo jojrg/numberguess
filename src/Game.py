@@ -9,30 +9,55 @@ class Game:
     Attributes:
         :foo: 
     """
+    MAX_ATTEMPTS = 8
+    LOWER_BOUND = 1
+    UPPER_BOUND = 100
 
     def __init__(self):
         super().__init__()
-        self.__gameId = str(uuid4())
-        self.__state = GameState.NEW
-        self.__secretNumber = None
+        self._gameId = str(uuid4())
+        self._state = GameState.NEW
+        self._secretNumber = None
+        self._guesses = []
 
     @property
     def gameId(self):
-        return self.__gameId[:]
+        return self._gameId[:]
 
     @property
     def secretNumber(self):
-        return self.__secretNumber
+        return self._secretNumber
 
     def start(self):
         print('Starting Game ..')
         gameId = str(uuid4())
-        self.__secretNumber = randint(1, 100)
-        self.__state = GameState.STARTED
+        self._secretNumber = randint(self.LOWER_BOUND, self.UPPER_BOUND)
+        self._guesses = []
+        self._state = GameState.STARTED
 
-    def getState(self):
-        return __state
+    @property
+    def state(self):
+        return self._state
+
+    @state.setter
+    def state(self, value):
+        self._state = value
+
+    @property
+    def guesses(self):
+        return self._guesses
+
+    def addGuess(self, guess):
+        self._guesses.append(guess)
 
     def quit(self):
         print('Quitting Game ..')
-        self_state = GameState.QUIT
+        self._state = GameState.QUIT
+
+    def won(self):
+        self._state = GameState.WON
+
+    def lost(self):
+        print('setting state to lost')
+        self.state = GameState.LOST
+        #self.state = 4
