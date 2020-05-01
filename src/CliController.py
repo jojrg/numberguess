@@ -36,7 +36,6 @@ class CliController:
         guessResult = self._gameService.processGuess(
             self.get_number_input())
         if (guessResult.state == GameState.STARTED):
-
             if (guessResult.distance > 0):
                 print('\nMeine Zahl ist kleiner!')
             else:
