@@ -9,7 +9,7 @@ class Game:
     Attributes:
         :foo: 
     """
-    MAX_ATTEMPTS = 8
+    MAX_ATTEMPTS = 6
     LOWER_BOUND = 1
     UPPER_BOUND = 100
 
