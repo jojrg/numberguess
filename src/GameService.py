@@ -19,7 +19,7 @@ class GameService:
         self._games = {}
         game = Game()
         self._game = game
-        self._games[game.gameId] = game
+        self._games[game.gameid] = game
 
     def processGuess(self, guessedNumber):
         #print('Processing guesses number: {}'.format(guessedNumber))

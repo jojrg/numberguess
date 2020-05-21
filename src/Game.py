@@ -15,49 +15,60 @@ class Game:
 
     def __init__(self):
         super().__init__()
-        self._gameId = str(uuid4())
-        self._state = GameState.NEW
-        self._secretNumber = None
-        self._guesses = []
+        self.gameid = str(uuid4())
+        self.state = GameState.NEW
+        self.secretNumber = None
+        self.guesses = []
 
     @property
-    def gameId(self):
-        return self._gameId[:]
+    def gameid(self):
+        return self.__gameid
+
+    @gameid.setter
+    def gameid(self, val):
+        self.__gameid = val
 
     @property
     def secretNumber(self):
-        return self._secretNumber
+        return self.__secretNumber
+
+    @secretNumber.setter
+    def secretNumber(self, val):
+        self.__secretNumber = val
+
+    @property
+    def state(self):
+        return self.__state
+
+    @state.setter
+    def state(self, value):
+        self.__state = value
+
+    @property
+    def guesses(self):
+        return self.__guesses[:]
+
+    @guesses.setter
+    def guesses(self, value):
+        self.__guesses = value
+
+    def addGuess(self, guess):
+        self.__guesses.append(guess)
 
     def start(self):
         print('Starting Game ..')
         gameId = str(uuid4())
-        self._secretNumber = randint(self.LOWER_BOUND, self.UPPER_BOUND)
-        self._guesses = []
-        self._state = GameState.STARTED
-
-    @property
-    def state(self):
-        return self._state
-
-    @state.setter
-    def state(self, value):
-        self._state = value
-
-    @property
-    def guesses(self):
-        return self._guesses
-
-    def addGuess(self, guess):
-        self._guesses.append(guess)
+        self.secretNumber = randint(self.LOWER_BOUND, self.UPPER_BOUND)
+        self.__guesses = []
+        self.state = GameState.STARTED
 
     def quit(self):
         print('Quitting Game ..')
-        self._state = GameState.QUIT
+        self.state = GameState.QUIT
 
     def won(self):
-        self._state = GameState.WON
+        self.state = GameState.WON
 
     def lost(self):
         print('setting state to lost')
         self.state = GameState.LOST
-        #self.state = 4
