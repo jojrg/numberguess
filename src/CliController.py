@@ -4,32 +4,20 @@ from GameService import GameService
 from GuessResult import GuessResult
 from GameState import GameState
 from Game import Game
-#from blockchain import Blockchain
-#from verification import Verification
 
 
 class CliController:
-    """The node which runs the local blockchain instance.
-
-    Attributes:
-        :id: The id of the node.
-        :blockchain: The blockchain which is run by this node.
-    """
+    """ Command line based client class for NumberGuess game """
 
     def __init__(self):
         # self.id = str(uuid4())
-        self.id = 'MAX'
-        self._gameService = GameService()
-        self._ended = False
-        # self.blockchain = Blockchain(self.id)
-
-    @property
-    def ended(self):
-        return self._ended
+        self.__ended = False
+        self.__currentGameId = None
 
     def main(self):
-        while not self.ended:
-            if (self._gameService.getGameState() == GameState.STARTED):
+        self.mainMenu()
+        while not self.__ended:
+            if (GameService.getGameState(self.__currentGameId) == GameState.STARTED):
                 self.handleGuess()
             else:
                 self.mainMenu()
@@ -40,8 +28,9 @@ class CliController:
         print('q: Beenden')
         user_choice = input('Deine Auswahl: ')
         if user_choice == '1':
-            self._gameService.startGame()
-            secretNumber = self._gameService.getSecretNumber()
+            self.__currentGameId = GameService.registerGame()
+            GameService.startGame(self.__currentGameId)
+            secretNumber = GameService.getSecretNumber(self.__currentGameId)
             print('-------------------------------------')
             print('Neues Spiel - neues Glück!!')
             print('Ich habe mir eine Zahl zwischen {} und {} ausgedacht .. '.format(
@@ -50,12 +39,13 @@ class CliController:
                 Game.MAX_ATTEMPTS))
             print('-------------------------------------\n')
         elif user_choice == 'q':
-            self._ended = True
+            self.__ended = True
             print('Auf Wiedersehen - bis zur nächsten Raterunde!')
 
     def handleGuess(self):
         number_input = int(input('Dein Zahlentipp: '))
-        guessResult = self._gameService.processGuess(number_input)
+        guessResult = GameService.processGuess(
+            self.__currentGameId, number_input)
         if (guessResult.state == GameState.STARTED):
             if (guessResult.distance > 0):
                 print('\n\nMeine Zahl ist kleiner!')

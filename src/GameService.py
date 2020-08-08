@@ -13,35 +13,47 @@ class GameService:
     Attributes:
         :foo: 
     """
+    games = {}
 
-    def __init__(self):
-        super().__init__()
-        self._games = {}
-        game = Game()
-        self._game = game
-        self._games[game.gameid] = game
+    @classmethod
+    def registerGame(cls):
+        """ Creates a new Game instance, stores it in games dictionary and return the gameid"""
+        newGame = Game()
+        cls.games[newGame.gameId] = newGame
+        return newGame.gameId
 
-    def processGuess(self, guessedNumber):
+    @classmethod
+    def processGuess(cls, gameId, guessedNumber):
+        """ processes a guess, sets the game state and returns a GuessResult """
         #print('Processing guesses number: {}'.format(guessedNumber))
-        distance = guessedNumber - self._game.secretNumber
+        game = cls.games[gameId]
+        distance = guessedNumber - game.secretNumber
         guess = Guess(guessedNumber, distance)
-        self._game.addGuess(guess)
-        guessesTaken = len(self._game.guesses)
+        game.addGuess(guess)
+        guessesTaken = len(game.guesses)
         attemptsLeft = Game.MAX_ATTEMPTS - guessesTaken
         if (distance == 0):
-            self._game.won()
+            game.won()
         elif (attemptsLeft == 0):
-            self._game.lost()
-        return GuessResult(self._game.state, distance, guessesTaken, self._game.secretNumber)
+            game.lost()
+        return GuessResult(game.state, distance, guessesTaken, game.secretNumber)
 
-    def getGameState(self):
-        return self._game.state
+    @classmethod
+    def getGameState(cls, gameId):
+        return cls.games[gameId].state
 
-    def startGame(self):
-        self._game.start()
+    @classmethod
+    def startGame(cls, gameId):
+        print('Processing GameService.startGame, gameid: {}'.format(gameId))
+        game = cls.games[gameId]
+        print('Processing game, game: {}'.format(game))
+        print('game id: {}'.format(game.gameId))
+        cls.games[gameId].start()
 
-    def quitGame(self):
-        self._game.quit()
+    @classmethod
+    def quitGame(cls, gameId):
+        cls.games[gameId].quit()
 
-    def getSecretNumber(self):
-        return self._game.secretNumber
+    @classmethod
+    def getSecretNumber(cls, gameId):
+        return cls.games[gameId].secretNumber

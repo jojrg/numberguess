@@ -4,7 +4,7 @@ from GameState import GameState
 
 
 class Game:
-    """The GameService
+    """The Game Class
 
     Attributes:
         :foo: 
@@ -15,18 +15,18 @@ class Game:
 
     def __init__(self):
         super().__init__()
-        self.gameid = str(uuid4())
+        self.gameId = str(uuid4())
         self.state = GameState.NEW
         self.secretNumber = None
         self.guesses = []
 
     @property
-    def gameid(self):
-        return self.__gameid
+    def gameId(self):
+        return self.__gameId
 
-    @gameid.setter
-    def gameid(self, val):
-        self.__gameid = val
+    @gameId.setter
+    def gameId(self, val):
+        self.__gameId = val
 
     @property
     def secretNumber(self):
