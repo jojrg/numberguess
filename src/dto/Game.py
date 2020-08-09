@@ -1,6 +1,7 @@
 from uuid import uuid4
 from random import randint
-from GameState import GameState
+from dto.GameState import GameState
+import json
 
 
 class Game:
@@ -72,3 +73,7 @@ class Game:
     def lost(self):
         print('setting state to lost')
         self.state = GameState.LOST
+
+    def toJSON(self):
+        return json.dumps(self, default=lambda o: o.__dict__,
+                          sort_keys=True, indent=4)

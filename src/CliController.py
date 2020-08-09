@@ -1,9 +1,9 @@
 from uuid import uuid4
 from random import randint
-from GameService import GameService
-from GuessResult import GuessResult
-from GameState import GameState
-from Game import Game
+from service.GameService import GameService
+from dto.GuessResult import GuessResult
+from dto.GameState import GameState
+from dto.Game import Game
 
 
 class CliController:
@@ -54,16 +54,21 @@ class CliController:
             print('Du hast noch {} Versuche\n'.format(
                 guessResult.guessesLeft))
         elif (guessResult.state == GameState.WON):
+            # writing game to a json file
+            GameService.saveGame(self.__currentGameId)
             print('\n\n!!! G R A T U L A T I O N !!!\n\nDu hast die Zahl erraten. Sie ist: {}  ! :-)))'.format(
                 guessResult.secretNumber))
             print('Anzahl der Versuche: {}'.format(
                 guessResult.guessesTaken))
         elif (guessResult.state == GameState.LOST):
+           # writing game to a json file
+            GameService.saveGame(self.__currentGameId)
             print('\n\n\n!! L E I D E R   V E R L O R E N !!\n :-(((  Die gesuchte Zahl ist: {}!'.format(
                 guessResult.secretNumber))
         else:
             raise Exception('Error: invalid state')
 
 
-ctl = CliController()
-ctl.main()
+if __name__ == '__main__':
+    ctl = CliController()
+    ctl.main()

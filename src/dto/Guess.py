@@ -1,6 +1,6 @@
 from uuid import uuid4
 from random import randint
-from GameState import GameState
+from dto.GameState import GameState
 
 
 class Guess:

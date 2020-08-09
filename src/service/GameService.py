@@ -1,10 +1,8 @@
 from uuid import uuid4
-from Game import Game
-from Guess import Guess
-from GuessResult import GuessResult
-
-#from blockchain import Blockchain
-#from verification import Verification
+from dto.Game import Game
+from dto.Guess import Guess
+from dto.GuessResult import GuessResult
+import json
 
 
 class GameService:
@@ -14,6 +12,7 @@ class GameService:
         :foo: 
     """
     games = {}
+    SAVE_DIR = 'game_output/'
 
     @classmethod
     def registerGame(cls):
@@ -57,3 +56,12 @@ class GameService:
     @classmethod
     def getSecretNumber(cls, gameId):
         return cls.games[gameId].secretNumber
+
+    @classmethod
+    def saveGame(cls, gameId):
+        game = cls.games[gameId]
+        fileName = cls.SAVE_DIR + game.gameId + '_game.json'
+        with open(fileName, 'w') as f:
+            # f.write(json.dumps(game))
+            f.write(game.toJSON())
+        # print(game.toJSON())

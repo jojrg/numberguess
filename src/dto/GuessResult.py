@@ -1,4 +1,4 @@
-from Game import Game
+from dto.Game import Game
 
 
 class GuessResult:
